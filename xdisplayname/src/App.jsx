@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
-const FullNameDisplay = () => {
+
+export default function App() {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [fullName, setFullName] = useState('');
@@ -8,20 +9,24 @@ const FullNameDisplay = () => {
 
   const handleFirstNameChange = (e) => {
     setFirstName(e.target.value);
-   
+    setDisplay(false); // Reset display when changing input
   };
 
   const handleLastNameChange = (e) => {
     setLastName(e.target.value);
-   
+    setDisplay(false); // Reset display when changing input
   };
-
-  
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setDisplay(true);
-    setFullName(`${firstName} ${lastName}`);
+
+    if (firstName.trim() !== '' && lastName.trim() !== '') {
+      setDisplay(true);
+      setFullName(`${firstName} ${lastName}`);
+    } else {
+      setDisplay(false);
+      setFullName('');
+    }
   };
 
   return (
@@ -30,24 +35,23 @@ const FullNameDisplay = () => {
       <form onSubmit={handleSubmit}>
         <label>
           First Name:
-          <input type="text" value={firstName} onChange={handleFirstNameChange} required/>
+          <input type="text" value={firstName} onChange={handleFirstNameChange} required />
         </label>
-        <br />
+       <br />
         <label>
           Last Name:
           <input type="text" value={lastName} onChange={handleLastNameChange} required />
         </label>
         <br />
-        <button type="submit" >
-          Submit
-        </button>
+        <button type="submit">Submit</button>
+        <br/>
       </form>
-      <br></br>
-      <label>
-         {display ? `Full Name: ${fullName}`:" "}
-      </label>
+      {display && (
+        <label>
+          Full Name: {fullName}
+        </label>
+      )}
     </div>
   );
 };
 
-export default FullNameDisplay;
